@@ -4,6 +4,7 @@ from sklearn.preprocessing import SplineTransformer
 from sklearn.metrics import mean_absolute_error
 import matplotlib.pyplot as plt
 
+
 def preprocess_data(data):
     """
     Extracts features and targets from the scraped data.
@@ -19,6 +20,7 @@ def preprocess_data(data):
     mileage = np.array([item['mileage'] for item in data]).reshape(-1, 1)  # Reshape for sklearn
     price = np.array([item['price'] for item in data])
     return mileage, price
+
 
 def fit_spline_regression_model(mileage, price, n_knots=5):
     """
@@ -52,6 +54,7 @@ def fit_spline_regression_model(mileage, price, n_knots=5):
 
     return model, spline_transformer, mae
 
+
 def plot_regression(mileage, price, model, spline_transformer):
     """
     Plots the regression model against the original and transformed data.
@@ -80,12 +83,8 @@ def plot_regression(mileage, price, model, spline_transformer):
     plt.grid(True)
     plt.show()
 
-    # Save and display the plot
-    output_file = "spline_regression_plot.png"
-    plt.savefig(output_file)
-    print(f"Plot saved as {output_file}")
 
-def evaluate_offer(model, spline_transformer, offer_mileage, offer_price, prices, threshold=0.1):
+def evaluate_offer(model, spline_transformer, offer_mileage, offer_price, prices, mileages, threshold=0.1):
     """
     Evaluates the user's car offer using the regression model and calculates a fair price range.
 
@@ -95,10 +94,11 @@ def evaluate_offer(model, spline_transformer, offer_mileage, offer_price, prices
         offer_mileage (float): Mileage of the user's car.
         offer_price (float): Price of the user's car.
         prices (np.ndarray): Array of actual car prices.
+        mileages (np.ndarray): Array of actual car mileages.
         threshold (float): Percentage deviation allowed for a "fair" offer.
 
     Returns:
-        str: Decision about whether the offer is great, fair, or overpriced, along with the fair price range.
+        dict: Decision, fair price range, and the top three lucrative offers.
     """
     # Transform the offer mileage
     offer_features = spline_transformer.transform(np.array([[offer_mileage]]))
@@ -110,14 +110,27 @@ def evaluate_offer(model, spline_transformer, offer_mileage, offer_price, prices
     fair_price_max = predicted_price + threshold * price_std
 
     if fair_price_min <= offer_price <= fair_price_max:
-        return (f"This offer is fair. (Predicted Price: CHF {predicted_price:.2f}, "
-                f"Fair Range: CHF {fair_price_min:.2f} - CHF {fair_price_max:.2f})")
+        decision = "This offer is fair."
     elif offer_price < fair_price_min:
-        return (f"This is a great offer! (Predicted Price: CHF {predicted_price:.2f}, "
-                f"Fair Range: CHF {fair_price_min:.2f} - CHF {fair_price_max:.2f})")
+        decision = "This is a great offer!"
     else:
-        return (f"This offer is overpriced. (Predicted Price: CHF {predicted_price:.2f}, "
-                f"Fair Range: CHF {fair_price_min:.2f} - CHF {fair_price_max:.2f})")
+        decision = "This offer is overpriced."
+
+    # Identify the top three lucrative offers
+    lucrative_offers = [
+        {'price': price, 'mileage': mileage}
+        for price, mileage in zip(prices, mileages)
+        if price < fair_price_min
+    ]
+    lucrative_offers = sorted(lucrative_offers, key=lambda x: x['price'])[:3]
+
+    return {
+        'decision': decision,
+        'predicted_price': predicted_price,
+        'fair_range': (fair_price_min, fair_price_max),
+        'top_three_offers': lucrative_offers
+    }
+
 
 def analyze_offer(data, offer_price, offer_mileage, n_knots=5, threshold=0.1):
     """
@@ -131,7 +144,8 @@ def analyze_offer(data, offer_price, offer_mileage, n_knots=5, threshold=0.1):
         threshold (float): Percentage deviation allowed for a "fair" offer.
 
     Returns:
-        str: Decision about whether the offer is great, fair, or overpriced, along with the fair price range.
+        str: Decision about whether the offer is great, fair, or overpriced, along with the fair price range
+             and top three lucrative offers.
     """
     if not data:
         return "No data available for analysis. Please try with different criteria."
@@ -145,4 +159,15 @@ def analyze_offer(data, offer_price, offer_mileage, n_knots=5, threshold=0.1):
     print("The MAE indicates the average deviation between the predicted and actual prices.")
 
     # Evaluate the user's offer
-    return evaluate_offer(model, spline_transformer, offer_mileage, offer_price, price, threshold)
+    result = evaluate_offer(model, spline_transformer, offer_mileage, offer_price, price, mileage, threshold)
+    output = (f"{result['decision']}\n"
+              f"Predicted Price: CHF {result['predicted_price']:.2f}\n"
+              f"Fair Price Range: CHF {result['fair_range'][0]:.2f} - CHF {result['fair_range'][1]:.2f}\n")
+    if result['top_three_offers']:
+        output += "\nTop 3 Lucrative Offers:\n"
+        for i, offer in enumerate(result['top_three_offers'], 1):
+            output += f"{i}. Price: CHF {offer['price']}, Mileage: {offer['mileage']} km\n"
+    else:
+        output += "\nNo lucrative offers found below the fair price range."
+
+    return output

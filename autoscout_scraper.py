@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
 
 # Path to GeckoDriver (FirefoxDriver)
-driver_path = '/Users/fabioburi/PycharmProjects/autoscout24_car_offer_evaluator/.venv/bin/geckodriver'  # Update this with your actual path
+driver_path = '/path/to/your/project/.venv/bin/geckodriver'  # Update this with your actual path
 
 # Firefox options for headless mode
 firefox_options = Options()

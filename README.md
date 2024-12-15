@@ -76,9 +76,21 @@ Found 123 listings.
 
 Analyzing your offer...
 
-Spline Regression model trained with Mean Absolute Error: CHF 3259.57
+Spline Regression model trained with Mean Absolute Error: CHF 3281.98
+The MAE indicates the average deviation between the predicted and actual prices.
+
 --- Analysis Result ---
-This is a great offer! (Predicted Price: CHF 36693.04, Fair Range: CHF 35132.84 - CHF 38253.24)
+This is a great offer!
+Predicted Price: CHF 36799.11
+Fair Price Range: CHF 35246.04 - CHF 38352.18
+
+Top 3 Lucrative Offers:
+1. Price: CHF 25900, Mileage: [119333] km
+2. Price: CHF 26500, Mileage: [96000] km
+3. Price: CHF 27800, Mileage: [109600] km
+
+Thank you for using the Autoscout24.ch Car Offer Evaluator!
+
 ```
 
 ## Notes

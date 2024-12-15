@@ -1,3 +1,6 @@
+"""
+This script uses spline regression to analyze car price vs. mileage data, evaluate user car offers, and identify lucrative deals based on fair price ranges.
+"""
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import SplineTransformer

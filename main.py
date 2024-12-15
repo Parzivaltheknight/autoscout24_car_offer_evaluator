@@ -52,21 +52,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# ======================== Explenation ========================
-# 1. Workflow
-# User Input:
-# Collects car brand, model, year range, offer price, and mileage using parse_user_input from utils.py.
-#
-# 2. Scraping:
-# Fetches data from Autoscout24.ch using scrape_autoscout_data from autoscout_scraper_old2.py.
-#
-# 3. Cleaning:
-# Removes outliers from scraped data using clean_data from utils.py.
-#
-# 4. Analysis:
-# Uses the regression model in regression_analysis_linear.py to assess whether the user's offer is great, fair, or overpriced.
-#
-# 5. Output:
-# Prints a user-friendly result with the predicted price.
-# ======================== Explenation End ========================

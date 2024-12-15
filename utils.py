@@ -135,28 +135,3 @@ def clean_data(data):
     ]
     print(final_data)
     return final_data
-
-# ======================== Explenation ========================
-# 1. parse_user_input
-#
-# Validates Inputs:
-# Brand & Model: Captures and converts input to lowercase for uniformity.
-# Year Range: Ensures the input is in the format YYYY or YYYY-YYYY.
-# Price & Mileage: Ensures positive numbers are entered.
-# Returns: A dictionary containing user-provided data.
-#
-# 2. clean_data
-#
-# Removes Outliers:
-# Uses the Interquartile Range (IQR) method to filter out abnormal data points for both price and mileage.
-# Ensures the regression analysis isn't skewed by extreme values.
-# Steps:
-#
-# Calculate the IQR for both price and mileage.
-# Define thresholds:
-# Lower bound:
-# Q1−1.5×IQR
-# Upper bound:
-# Q3+1.5×IQR
-# Filter out data points outside these bounds.
-# ======================== Explenation End ========================

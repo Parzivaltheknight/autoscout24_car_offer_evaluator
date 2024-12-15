@@ -87,6 +87,21 @@ This is a great offer! (Predicted Price: CHF 36693.04, Fair Range: CHF 35132.84 
 - The regression analysis uses a spline regression model for improved price prediction accuracy.
 - Results depend on the availability and quality of scraped data.
 
+## Disclaimer
+
+This project was created with significant assistance from ChatGPT, an AI language model developed by OpenAI. ChatGPT was utilized throughout the development process, including but not limited to:
+
+- Creating the code's initial structure and implementation.  
+- Refining, optimizing, and improving the functionality of the code.  
+- Debugging and resolving technical issues encountered during development.  
+- Writing documentation, comments, and other explanatory materials related to the code.  
+
+While every effort has been made to ensure the accuracy and functionality of the code, users should be aware that the involvement of an AI tool means that the code may contain unintentional errors or inefficiencies.  
+
+**It is the responsibility of the user to test and validate the software for their specific use case.**  
+
+If you notice any issues, or have suggestions for improvements, please feel free to contribute or report them via this project's repository.
+
 ## License
 
 This project is licensed under the GNU General Public License (v3.0). See the [LICENSE](LICENSE) file for more details.

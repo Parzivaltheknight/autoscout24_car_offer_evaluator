@@ -3,7 +3,7 @@ Main script for assessing car offers on Autoscout24.ch.
 """
 
 from autoscout_scraper import scrape_autoscout_data
-from regression_analysis_mae2 import analyze_offer
+from regression_analysis_mae import analyze_offer
 from utils import parse_user_input, clean_data
 
 
